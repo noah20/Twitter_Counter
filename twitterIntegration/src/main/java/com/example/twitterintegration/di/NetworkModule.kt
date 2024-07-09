@@ -1,9 +1,12 @@
 package com.example.twitterintegration.di
 
 
+import com.example.twitterintegration.data.login.api.TwitterLoginApiService
+import com.example.twitterintegration.data.login.repo.TweetLoginAuthImp
 import com.example.twitterintegration.data.utils.RequestInterceptor
 import com.example.twitterintegration.data.post_tweet.api.TwitterApiService
 import com.example.twitterintegration.data.post_tweet.repo.PostTweetRepositoryImp
+import com.example.twitterintegration.domain.login.TwitterLoginAuth
 import com.example.twitterintegration.domain.post_tweet.PostTweetRepository
 import dagger.Module
 import dagger.Provides
@@ -24,7 +27,7 @@ object NetworkModuleProvider {
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.twitter.com/2/")
+            .baseUrl("https://api.twitter.com/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -55,6 +58,18 @@ object NetworkModuleProvider {
     @Singleton
     fun providePostTweetRepository(twitterApiService: TwitterApiService): PostTweetRepository {
         return PostTweetRepositoryImp(twitterApiService)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTwitterLoginApiService(retrofit:Retrofit): TwitterLoginApiService {
+        return retrofit.create(TwitterLoginApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideTweetLoginAuthImp(twitterApiService: TwitterLoginApiService): TwitterLoginAuth {
+        return TweetLoginAuthImp(twitterApiService)
     }
 
 }

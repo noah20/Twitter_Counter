@@ -9,11 +9,9 @@ import javax.inject.Inject
 
 class RequestInterceptor @Inject constructor() : Interceptor {
 
-    val token = "AAAAAAAAAAAAAAAAAAAAALDvugEAAAAAB1DAXa%2FIaGUSTsE6VS1R4mhRib0%3Dyk58YlQrKMrzdCtNJSYY9ODEknOrAflkcMNeblGfIoLKXSOM0A"
-
     override fun intercept(chain: Interceptor.Chain): Response {
         val newRequest = chain.request().newBuilder()
-        newRequest.header("authorization", "Bearer $token")
+//        newRequest.header("authorization", "Bearer $token")
         val response = chain.proceed(newRequest.build())
         return handleServerCodes(response)
     }

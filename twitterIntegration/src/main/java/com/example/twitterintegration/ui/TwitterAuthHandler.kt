@@ -1,5 +1,6 @@
 package com.example.twitterintegration.ui
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -19,9 +20,6 @@ open class TwitterAuthHandler:Fragment() {
     private var codeVerifier: String = ""
 
     private val viewModel: PostTwitViewModel by viewModels()
-
-
-
 
     fun startAuthUser(){
         codeVerifier = generateCodeVerifier()
@@ -69,7 +67,9 @@ open class TwitterAuthHandler:Fragment() {
     }
 
     private fun exchangeCodeForAccessToken(code: String) {
-        viewModel.doClientAuth(code , viewModel.getGeneratedCode() ?: "")
+        viewModel.doClientAuth(code , viewModel.getGeneratedCode() ?: "").observe(viewLifecycleOwner){
+
+        }
     }
 
     private fun generateCodeVerifier(): String {

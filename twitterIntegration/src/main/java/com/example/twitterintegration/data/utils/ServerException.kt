@@ -10,3 +10,8 @@ data class ServerException(
     val type: String? = null,
     val status: Int? = null
 ): IOException()
+
+object ErrorCodes{
+    const val NOT_FOUND = 404
+    const val UNAUTHORIZED = 1001
+}

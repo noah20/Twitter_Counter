@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import com.example.theming.binding.model.CounterDataModel
 import com.example.theming.binding.model.ToolBarConfig
 import com.example.twitterintegration.R
+import com.example.twitterintegration.data.utils.ErrorCodes
+import com.example.twitterintegration.data.utils.ServerException
 import com.example.twitterintegration.databinding.FragmentPostTweetBinding
 import com.example.twitterintegration.utils.common_extensions.copyText
 import com.example.twitterintegration.utils.common_extensions.show
@@ -54,8 +56,8 @@ class PostTweetFragment : TwitterAuthHandler() {
 
         mBinding?.btnPost?.setOnClickListener {
             val tweet = mBinding?.etTweet?.text?.toString() ?: return@setOnClickListener
-            startAuthUser()
-//            postTweet(tweet)
+//            startAuthUser()
+            postTweet(tweet)
         }
         mBinding?.btnClear?.setOnClickListener {
             mBinding?.etTweet?.text = null
@@ -78,9 +80,22 @@ class PostTweetFragment : TwitterAuthHandler() {
             if(it.isSuccess){
                 context?.showToast(getString(R.string.posted_successfully))
             }else{
-                activity?.showErrorDialog(getString(R.string.post_from_twitter) , getString(R.string.post_error, it.exceptionOrNull()?.message)){
-                    openTweeterIntent(tweet)
+                val error = it.exceptionOrNull()
+                if(error is ServerException){
+                    if(error.status == ErrorCodes.UNAUTHORIZED){
+                        startAuthUser()
+                        activity?.showErrorDialog(getString(R.string.post_from_twitter) , getString(R.string.post_error, error.title),null)
+                    }else{
+                        activity?.showErrorDialog(getString(R.string.post_from_twitter) , getString(R.string.post_error, error.title)){
+                            openTweeterIntent(tweet)
+                        }
+                    }
+                }else{
+                    activity?.showErrorDialog(getString(R.string.post_from_twitter) , getString(R.string.post_error, it.exceptionOrNull()?.message)){
+                        openTweeterIntent(tweet)
+                    }
                 }
+
             }
         }
     }

@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.tweetvalidator.tweet_validator.TweetLengthValidator
 import com.example.twitterintegration.data.model.PostTweetRequest
 import com.example.twitterintegration.data.utils.ApiKeys
+import com.example.twitterintegration.data.utils.ErrorCodes.UNAUTHORIZED
 import com.example.twitterintegration.data.utils.ServerException
 import com.example.twitterintegration.data.utils.SharedPrefs
 import com.example.twitterintegration.domain.client_access.usecase.ClientAccessAuthUseCase
@@ -26,12 +27,15 @@ class PostTwitViewModel @Inject constructor(
 
     fun postTweet(txt: String , token:String = "") = liveData(Dispatchers.IO) {
         try {
-            service.execute(PostTweetRequest(txt),token)
+            val accessToken = sharedPref.getClientAccessToken()
+            if(accessToken.isNullOrBlank())
+                throw ServerException(title = "unauthorized",status= UNAUTHORIZED)
+            service.execute(PostTweetRequest(txt),"Bearer $accessToken")
             emit(Result.success(true))
         } catch (e: Exception) {
             e.printStackTrace()
             if(e is ServerException){
-                emit(Result.failure(Exception(e.title)))
+                emit(Result.failure(e))
             }else
                 emit(Result.failure(e))
         }
@@ -49,18 +53,20 @@ class PostTwitViewModel @Inject constructor(
 
     fun getGeneratedCode() = sharedPref.getGeneratedCode()
 
-    fun doClientAuth(code:String ,codeVerifier:String){
-        viewModelScope.launch {
-            try {
-                val apiKey = ApiKeys.apiKey
-                val apiKeySecret = ApiKeys.apiKeySecret
-                val basic = "$apiKey:$apiKeySecret"
-                val authHeader = "basic ${Base64.encodeToString(basic.toByteArray(),Base64.NO_WRAP)}"
-                val d = clientAccess.invoke(authHeader,code= code ,codeVerifier)
-                service.execute(PostTweetRequest("Hello World!"),"Bearer ${d?.accessToken ?: ""}")
-            }catch (e:Exception){
-                e.printStackTrace()
-            }
+    fun doClientAuth(code:String ,codeVerifier:String) = liveData<Result<Boolean>> {
+        try {
+            val apiKey = ApiKeys.apiKey
+            val apiKeySecret = ApiKeys.apiKeySecret
+            val basic = "$apiKey:$apiKeySecret"
+            val authHeader = "basic ${Base64.encodeToString(basic.toByteArray(),Base64.NO_WRAP)}"
+            val d = clientAccess.invoke(authHeader,code= code ,codeVerifier)
+            sharedPref.saveClientAccessToken(d?.accessToken)
+            service.execute(PostTweetRequest("Hello World!"),"Bearer ${d?.accessToken ?: ""}")
+            emit(Result.success(true))
+        }catch (e:Exception){
+            e.printStackTrace()
+            emit(Result.failure(e))
         }
+
     }
 }

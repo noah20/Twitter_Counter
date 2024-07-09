@@ -15,10 +15,10 @@ class SharedPrefs (private val context: Context) {
     private val sharedPref: SharedPreferences = context.getSharedPreferences(PREF, Context.MODE_PRIVATE)
 
 
-    fun saveToken(token: String?){
+    fun saveClientAccessToken(token: String?){
         put(PREF_TOKEN, token)
     }
-    fun getToken() : String? {
+    fun getClientAccessToken() : String? {
         return get(PREF_TOKEN, String::class.java)
     }
 

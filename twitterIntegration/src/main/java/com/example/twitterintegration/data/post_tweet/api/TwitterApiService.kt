@@ -12,7 +12,7 @@ interface TwitterApiService {
     @POST("2/tweets")
     suspend fun postTweet(
         @Body tweetRequest: PostTweetRequest?,
-        @Header("authorization") token: String
+        @Header("Authorization") token: String
     )
 }
 

@@ -54,8 +54,8 @@ class PostTweetFragment : TwitterAuthHandler() {
 
         mBinding?.btnPost?.setOnClickListener {
             val tweet = mBinding?.etTweet?.text?.toString() ?: return@setOnClickListener
-           postTweet(tweet)
-//           openTweeterIntent(tweet)
+            startAuthUser()
+//            postTweet(tweet)
         }
         mBinding?.btnClear?.setOnClickListener {
             mBinding?.etTweet?.text = null

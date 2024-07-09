@@ -1,6 +1,6 @@
 package com.example.twitterintegration.data.post_tweet.api
 
-import com.example.twitterintegration.data.PostTweetRequest
+import com.example.twitterintegration.data.model.PostTweetRequest
 import retrofit2.http.Body
 import retrofit2.http.Header
 import retrofit2.http.Headers
@@ -12,7 +12,7 @@ interface TwitterApiService {
     @POST("2/tweets")
     suspend fun postTweet(
         @Body tweetRequest: PostTweetRequest?,
-        @Header("Authorization") authHeader: String = "AAAAAAAAAAAAAAAAAAAAALDvugEAAAAAB1DAXa%2FIaGUSTsE6VS1R4mhRib0%3Dyk58YlQrKMrzdCtNJSYY9ODEknOrAflkcMNeblGfIoLKXSOM0A"
+        @Header("authorization") token: String
     )
 }
 

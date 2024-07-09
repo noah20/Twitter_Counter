@@ -1,16 +1,20 @@
 package com.example.twitterintegration.di
 
 
-import com.example.twitterintegration.data.login.api.TwitterLoginApiService
-import com.example.twitterintegration.data.login.repo.TweetLoginAuthImp
+import android.content.Context
+import com.example.twitterintegration.data.client_access.api.TwitterClientAuthService
+import com.example.twitterintegration.data.client_access.repo.ClientAccessAuthRepoImp
 import com.example.twitterintegration.data.utils.RequestInterceptor
 import com.example.twitterintegration.data.post_tweet.api.TwitterApiService
 import com.example.twitterintegration.data.post_tweet.repo.PostTweetRepositoryImp
-import com.example.twitterintegration.domain.login.TwitterLoginAuth
+import com.example.twitterintegration.data.utils.ApiKeys
+import com.example.twitterintegration.data.utils.SharedPrefs
+import com.example.twitterintegration.domain.client_access.ClientAccessAuthRepo
 import com.example.twitterintegration.domain.post_tweet.PostTweetRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -27,7 +31,7 @@ object NetworkModuleProvider {
     @Singleton
     fun provideRetrofit(client: OkHttpClient): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://api.twitter.com/")
+            .baseUrl(ApiKeys.baseUrl)
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
@@ -53,23 +57,29 @@ object NetworkModuleProvider {
         return retrofit.create(TwitterApiService::class.java)
     }
 
+    @Provides
+    @Singleton
+    fun provideTwitterClientAuthService(retrofit:Retrofit): TwitterClientAuthService {
+        return retrofit.create(TwitterClientAuthService::class.java)
+    }
+
+
+    @Provides
+    @Singleton
+    fun provideSharedPref(@ApplicationContext context: Context): SharedPrefs {
+        return SharedPrefs(context)
+    }
+
 
     @Provides
     @Singleton
     fun providePostTweetRepository(twitterApiService: TwitterApiService): PostTweetRepository {
         return PostTweetRepositoryImp(twitterApiService)
     }
-
     @Provides
     @Singleton
-    fun provideTwitterLoginApiService(retrofit:Retrofit): TwitterLoginApiService {
-        return retrofit.create(TwitterLoginApiService::class.java)
-    }
-
-    @Provides
-    @Singleton
-    fun provideTweetLoginAuthImp(twitterApiService: TwitterLoginApiService): TwitterLoginAuth {
-        return TweetLoginAuthImp(twitterApiService)
+    fun provideTweetLoginAuthImp(twitterApiService: TwitterClientAuthService): ClientAccessAuthRepo {
+        return ClientAccessAuthRepoImp(twitterApiService)
     }
 
 }

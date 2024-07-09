@@ -11,10 +11,18 @@ android {
     compileSdk 34
 
     defaultConfig {
-        minSdk 19
+        minSdk 21
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles "consumer-rules.pro"
+
+        buildConfigField "String", "apiKey", "\"myzCsYas08779O5mxmHPt1NfD\""
+        buildConfigField "String", "apiKeySecret", "\"jhigOCsmTQUdEJ1mJqwXqonDVgKOkoTJteEGz1RQm03KPZK840\""
+        buildConfigField "String", "bearerToken", "\"AAAAAAAAAAAAAAAAAAAAALDvugEAAAAAznE4gA045oZWIOQOiSSpZhwZC88%3DEsHiXpZ47bBx9b6BV90kaojk4uKHGHWCFCuMd6LfzvrZGI2sYw\""
+        buildConfigField "String", "accessToken", "\"4622262399-OZqUVuvlH6zYy8nvS993ZaRKbqZE6zmah4RDU69\""
+        buildConfigField "String", "accessTokenSecret", "\"QPFTZ2YXLPerzhk6Ms0mQEtXH4o2BTnMB3qx5VCjUTPfF\""
+        buildConfigField "String", "clientID", "\"OHJBam02YmhrRTlVZW82bUc5OVE6MTpjaQ\""
+        buildConfigField "String", "clientSecret", "\"PBylIgqwUZE2lTe4HSvLst6tfAMPKyH6y7nm95BvmQjs9tzxCf\""
     }
 
     buildTypes {

@@ -11,4 +11,8 @@
     <string name="twitter_not_installed">twitter not installed..!</string>
     <string name="post_error">Error: %1$s</string>
     <string name="post_from_twitter">post from twitter</string>
+    <string name="clear_text">Clear Text</string>
+    <string name="copy_text">Copy Text</string>
+    <string name="post_tweet">Post tweet</string>
+    <string name="start_typing_you_can_enter_up_to_280_characters">Start typing! You can enter up to 280 characters</string>
 </resources>

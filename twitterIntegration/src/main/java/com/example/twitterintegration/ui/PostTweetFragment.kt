@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.viewModels
 import com.example.theming.binding.model.CounterDataModel
 import com.example.theming.binding.model.ToolBarConfig
@@ -65,6 +66,12 @@ class PostTweetFragment : TwitterAuthHandler() {
         mBinding?.btnCopy?.setOnClickListener {
             val tweet = mBinding?.etTweet?.text?.toString()
            context?.copyText(tweet)
+        }
+        mBinding?.etTweet?.doAfterTextChanged {
+            val enableActions = it.toString().isNotBlank()
+            mBinding?.btnCopy?.isEnabled = enableActions
+            mBinding?.btnClear?.isEnabled = enableActions
+            mBinding?.btnPost?.isEnabled = enableActions
         }
     }
 

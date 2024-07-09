@@ -7,7 +7,8 @@ class TweetLengthValidator {
     companion object {
 
         fun calculateTwitterLength(text: String): Int {
-
+            if(text.isBlank())
+            return 0
             val emojiMatcher = TwitterTextEmojiRegex.VALID_EMOJI_PATTERN.matcher(text)
             val linkMatcher = TwitterTextAutoLink.VALID_LINK_PATTERN.matcher(text)
 //        val linkMatcher = Patterns.WEB_URL.matcher(text)

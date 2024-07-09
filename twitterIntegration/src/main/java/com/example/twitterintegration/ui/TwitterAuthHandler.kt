@@ -17,23 +17,20 @@ open class TwitterAuthHandler:Fragment() {
 
     fun startAuthUser(){
         codeVerifier = TwitterClientAuthGenerator.generateCodeVerifier()
-
-        val clientId = ApiKeys.clientId
-        val redirectUri = ApiKeys.redirectUrl
-        val state: String = TwitterClientAuthGenerator.generateRandomState() // Generate a random state for CSRF protection
+        val state: String = TwitterClientAuthGenerator.generateRandomState()
         val codeChallenge: String = TwitterClientAuthGenerator.generateCodeChallenge(codeVerifier)
         val responseType = "code"
         viewModel.saveGeneratedCode(codeVerifier)
         val authorizationUrl = ApiKeys.buildClientAuth(
             responseType = responseType,
-            clientId = clientId,
-            redirectUrl = redirectUri,
+            clientId = ApiKeys.clientId,
+            redirectUrl = ApiKeys.redirectUrl,
             state = state,
             codeChallenge = codeChallenge
         )
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(authorizationUrl))
 
-        startActivity(intent)
+        activity?.startActivity(intent)
     }
 
     override fun onResume() {

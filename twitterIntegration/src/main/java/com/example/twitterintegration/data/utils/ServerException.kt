@@ -1,8 +1,5 @@
 package com.example.twitterintegration.data.utils
-
-import com.google.gson.annotations.SerializedName
 import java.io.IOException
-import java.lang.Exception
 
 data class ServerException(
     val title: String? = null,
@@ -13,5 +10,6 @@ data class ServerException(
 
 object ErrorCodes{
     const val NOT_FOUND = 404
-    const val UNAUTHORIZED = 1001
+    const val NO_ACCESS_TOKEN_FOUND = 1001
+    const val UNAUTHORIZED = 401
 }

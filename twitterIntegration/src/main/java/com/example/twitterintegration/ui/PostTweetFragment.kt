@@ -89,9 +89,9 @@ class PostTweetFragment : TwitterAuthHandler() {
             }else{
                 val error = it.exceptionOrNull()
                 if(error is ServerException){
-                    if(error.status == ErrorCodes.UNAUTHORIZED){
+                    if(error.status == ErrorCodes.NO_ACCESS_TOKEN_FOUND || error.status == ErrorCodes.UNAUTHORIZED){
                         startAuthUser()
-                        activity?.showErrorDialog(getString(R.string.post_from_twitter) , getString(R.string.post_error, error.title),null)
+                        activity?.showToast(getString(R.string.post_error, error.title))
                     }else{
                         activity?.showErrorDialog(getString(R.string.post_from_twitter) , getString(R.string.post_error, error.title)){
                             openTweeterIntent(tweet)

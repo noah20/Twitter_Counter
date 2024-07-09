@@ -3,18 +3,16 @@ package com.example.twitterintegration.ui
 import android.util.Base64
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import androidx.lifecycle.viewModelScope
 import com.example.tweetvalidator.tweet_validator.TweetLengthValidator
 import com.example.twitterintegration.data.model.PostTweetRequest
 import com.example.twitterintegration.data.utils.ApiKeys
-import com.example.twitterintegration.data.utils.ErrorCodes.UNAUTHORIZED
+import com.example.twitterintegration.data.utils.ErrorCodes.NO_ACCESS_TOKEN_FOUND
 import com.example.twitterintegration.data.utils.ServerException
 import com.example.twitterintegration.data.utils.SharedPrefs
 import com.example.twitterintegration.domain.client_access.usecase.ClientAccessAuthUseCase
 import com.example.twitterintegration.domain.post_tweet.usecase.PostTweetUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -29,7 +27,7 @@ class PostTwitViewModel @Inject constructor(
         try {
             val accessToken = sharedPref.getClientAccessToken()
             if(accessToken.isNullOrBlank())
-                throw ServerException(title = "unauthorized",status= UNAUTHORIZED)
+                throw ServerException(title = "unauthorized",status= NO_ACCESS_TOKEN_FOUND)
             service.execute(PostTweetRequest(txt),"Bearer $accessToken")
             emit(Result.success(true))
         } catch (e: Exception) {

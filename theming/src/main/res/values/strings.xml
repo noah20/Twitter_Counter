@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">Twitter Counter</string>
+    <string name="typed_counter">%1$d/%2$d</string>
+    <string name="remaining_counter">%1$d</string>
+    <string name="characters_typed">Characters Typed</string>
+    <string name="characters_remaining">Characters Remaining</string>
+    <string name="twitter_character_count">Twitter character count</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

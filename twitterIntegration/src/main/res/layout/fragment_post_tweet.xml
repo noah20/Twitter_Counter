@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="toolbarConfig"
+            type="com.example.theming.binding.model.ToolBarConfig" />
+        <variable
+            name="typedCounterConfig"
+            type="com.example.theming.binding.model.CounterDataModel" />
+
+        <variable
+            name="remainingCounterConfig"
+            type="com.example.theming.binding.model.CounterDataModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true">
+
+        <include
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            layout="@layout/app_toolbar_layout"
+            app:toolbarConfig="@{toolbarConfig}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/nl_container"/>
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nl_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="24dp">
+
+                <ImageView
+                    android:id="@+id/iv_logo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/twitter_logo"
+                    app:layout_constraintBottom_toTopOf="@id/typed_counter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <include
+                    android:id="@+id/typed_counter"
+                    layout="@layout/counter_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="10dp"
+                    app:counterConfig="@{typedCounterConfig}"
+                    app:layout_constraintEnd_toStartOf="@id/remaining"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+
+                <include
+                    android:id="@+id/remaining"
+                    layout="@layout/counter_layout"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    app:counterConfig="@{remainingCounterConfig}"
+                    app:layout_constraintBottom_toBottomOf="@id/typed_counter"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/typed_counter"
+                    app:layout_constraintTop_toTopOf="@id/typed_counter" />
+
+                <EditText
+                    android:id="@+id/et_tweet"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:background="@drawable/tweet_bk"
+                    android:gravity="top"
+                    android:hint="Start typing! You can enter up to 280 characters"
+                    android:inputType="textMultiLine"
+                    android:minHeight="239dp"
+                    android:padding="16dp"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/color_5e6160"
+                    android:textSize="16sp"
+                    app:lineHeight="24sp"
+                    app:layout_constraintBottom_toTopOf="@id/btn_copy"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/typed_counter" />
+
+
+                <ProgressBar
+                    android:id="@+id/progressBar"
+                    style="?android:attr/progressBarStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="@id/et_tweet"
+                    app:layout_constraintBottom_toBottomOf="@id/et_tweet"
+                    app:layout_constraintTop_toTopOf="@id/et_tweet"
+                    app:layout_constraintEnd_toEndOf="@id/et_tweet"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_clear"
+                    style="@style/materialButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#DC0125"
+                    android:text="Clear Text"
+                    android:textAllCaps="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/btn_copy" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_copy"
+                    style="@style/materialButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="#00A970"
+                    android:text="Copy Text"
+                    app:layout_constraintBottom_toTopOf="@id/btn_post"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/et_tweet" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_post"
+                    style="@style/materialButtonStyle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:backgroundTint="#03A9F4"
+                    android:minHeight="56dp"
+                    android:textSize="18sp"
+                    android:text="Post tweet"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/btn_copy" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -22,7 +22,7 @@ object ApiKeys {
                 "?response_type=$responseType" +
                 "&client_id=$clientId" +
                 "&redirect_uri=$redirectUrl" +
-                "&scope=tweet.read%20tweet.write" +
+                "&scope=tweet.read%20tweet.write%20users.read" +
                 "&state=$state" +
                 "&code_challenge=$codeChallenge" +
                 "&code_challenge_method=S256"
